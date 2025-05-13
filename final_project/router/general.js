@@ -24,113 +24,96 @@ public_users.post("/register", (req, res) => {
 });
 
 // Get the book list available in the shop
+public_users.get('/', async (req, res) => {
+    const get_books = new Promise((resolve, reject) => {
+        resolve(res.send(JSON.stringify({books}, null, 4)));
+    })
+    get_books.then(() => console.log("resolved"));
+});
 // public_users.get('/', function (req, res) {
 //     res.send(JSON.stringify(books,null,4));
 // });
-public_users.get('/', async (req, res) => {
-    try {
-      const data = await new Promise((resolve) => {
-        setTimeout(() => resolve(books), 500);
-      });
-  
-      res.status(200).json(data);
-    } catch (error) {
-      res.json({ message: "Error retrieving books" });
-    }
-  });
+// public_users.get('/', async (req, res) => {
+//     try {
+//       const data = await promise((resolve) => {
+//         const booksList = Object.values(books);
+//         resolve(booksList)
+//       }, 3000);
+//       return res.json(data);
+//     } catch (error) {
+//       res.json({ message: "Error retrieving books" });
+//     }
+//   });
 
 // Get book details based on ISBN
-// public_users.get('/isbn/:isbn', function (req, res) {
-//     const isbn = parseInt(req.params.isbn);
-//     const entry = Object.entries(books).find(([key, book]) => book.ISBN === isbn);
-//     if (entry) {
-//         const [id, book] = entry;
-//         return res.json({ [id]: book });
-//     } else {
-//         return res.json({ message: "Book not found" });
+public_users.get('/isbn/:isbn', function (req, res) {
+    const isbn = parseInt(req.params.isbn);
+    const entry = Object.entries(books).find(([key, book]) => book.ISBN === isbn);
+    if (entry) {
+        const [id, book] = entry;
+        return res.json({ [id]: book });
+    } else {
+        return res.json({ message: "Book not found" });
+    }
+// });
+// public_users.get('/isbn/:isbn', async (req, res) => {
+//     try{
+//         const data = await promise((resolve) => {
+//             const isbn = req.params.isbn + "";
+//             const nook = books[isbn];
+//             resolve(book);
+//         }, 3000);
+//         if(data){
+//             return res.json(data);
+//         }
+//         return res.json("invalid isbn");
+//     } catch(error){
+//         return res.json("error");
 //     }
 // });
-public_users.get('/isbn/:isbn', (req, res) => {
-    const isbn = parseInt(req.params.isbn);
-  
-    new Promise((resolve, reject) => {
-      const entry = Object.entries(books).find(([key, book]) => book.ISBN === isbn);
-      if (entry) {
-        resolve(entry);
-      } else {
-        reject("Book not found");
-      }
-    })
-    .then(([id, book]) => {
-      res.json({ [id]: book });
-    })
-    .catch((err) => {
-      res.json({ message: err });
-    });
-  });
-  
+
+
+// public_users.get('/isbn/:isbn', (req, res) => {
+//     const get_books_isbn = new Promise((resolve, reject) => {
+//     const isbn = parseInt(req.params.isbn);
+//     if(isbn <= 10){
+//         resolve(books[isbn]);
+//     } else {
+//         reject('ISBN not found')
+//     }
+//   });
+//     get_books_isbn.then(function(){
+//         res.send(book);  
+//         console.log("resolved");
+//     }).catch(function(){
+//         res.send(error)
+//         console.log('not found');
+//     });
 
 // Get book details based on author
-// public_users.get('/author/:author', function (req, res) {
-//     const author = req.params.author;
-//     const entries = Object.entries(books).filter(([key, book]) => book.author === author);
-//     if (entries.length > 0) {
-//         const result = Object.fromEntries(entries);
-//         return res.json(result);
-//     } else {
-//         return res.json({ message: "Book not found" });
-//     }
-// });
-public_users.get('/author/:author', async (req, res) => {
-    try {
-      const author = req.params.author;
-  
-      const entries = await new Promise((resolve) => {
-        const result = Object.entries(books).filter(([key, book]) => book.author === author);
-        resolve(result);
-      });
-  
-      if (entries.length > 0) {
+public_users.get('/author/:author', function (req, res) {
+    const author = req.params.author;
+    const entries = Object.entries(books).filter(([key, book]) => book.author === author);
+    if (entries.length > 0) {
         const result = Object.fromEntries(entries);
-        res.json(result);
-      } else {
-        res.json({ message: "Book not found" });
-      }
-    } catch (err) {
-      res.json({ message: "Internal server error" });
+        return res.json(result);
+    } else {
+        return res.json({ message: "Book not found" });
     }
-  });
+});
 
-// Get all books based on title
-// public_users.get('/title/:title', function (req, res) {
-//     const title = req.params.title;
-//     const entries = Object.entries(books).filter(([key, book]) => book.title === title);
-//     if (entries.length > 0) {
-//         const result = Object.fromEntries(entries);
-//         return res.json(result);
-//     } else {
-//         return res.json({ message: "Book not found" });
-//     }
-// });
-  public_users.get('/title/:title', async (req, res) => {
-    try {
-      const title = req.params.title;
-  
-      const entries = await new Promise((resolve) => {
-        const result = Object.entries(books).filter(([key, book]) => book.title === title);
-        resolve(result);
-      });
-  
-      if (entries.length > 0) {
+
+//Get all books based on title
+public_users.get('/title/:title', function (req, res) {
+    const title = req.params.title;
+    const entries = Object.entries(books).filter(([key, book]) => book.title === title);
+    if (entries.length > 0) {
         const result = Object.fromEntries(entries);
-        res.json(result);
-      } else {
-        res.json({ message: "Book not found" });
-      }
-    } catch (err) {
-      res.json({ message: "Internal server error" });
+        return res.json(result);
+    } else {
+        return res.json({ message: "Book not found" });
     }
-  });
+});
   
   
 //  Get book review
