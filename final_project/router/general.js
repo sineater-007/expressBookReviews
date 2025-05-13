@@ -55,7 +55,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
     } else {
         return res.json({ message: "Book not found" });
     }
-// });
+});
 // public_users.get('/isbn/:isbn', async (req, res) => {
 //     try{
 //         const data = await promise((resolve) => {
